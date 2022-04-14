@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordEditText"
-        android:layout_marginTop="122dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="@dimen/def_margin"
         android:onClick="loginAsGuest"
         android:text="@string/guestLoginButton"
@@ -77,9 +77,8 @@
         android:layout_below="@id/normalLogin"
         android:layout_marginTop="@dimen/def_margin"
         android:layout_marginBottom="@dimen/def_margin"
-        android:textAlignment="center"
         android:onClick="register"
         android:text="@string/register"
-        />
+        android:textAlignment="center" />
 
 </RelativeLayout>
