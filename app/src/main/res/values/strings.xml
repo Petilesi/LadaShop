@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LadaShop</string>
+    <string name="welcome">Üdvözlünk a LadaShopban!</string>
+    <string name="username">Felhasználónév</string>
+    <string name="password">Jelszó</string>
+    <string name="guestLoginButton">Belépés vendégként</string>
+    <string name="normalLogin">Bejelentkezés</string>
+    <string name="register">Regisztráció</string>
+</resources>
