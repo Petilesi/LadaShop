@@ -52,32 +52,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordEditText"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="@dimen/def_margin"
         android:onClick="loginAsGuest"
-        android:text="@string/guestLoginButton"
-        android:textAlignment="center" />
+        android:text="@string/guestLoginButton" />
 
     <Button
         android:id="@+id/normalLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/guestLogin"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="@dimen/landMargin"
         android:layout_marginBottom="@dimen/def_margin"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:onClick="normalLogin"
         android:text="@string/normalLogin"
-        android:textAlignment="center" />
+        />
 
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/normalLogin"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="@dimen/landMargin"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="@dimen/def_margin"
         android:onClick="register"
         android:text="@string/register"
-        android:textAlignment="center" />
+       />
 
 </RelativeLayout>

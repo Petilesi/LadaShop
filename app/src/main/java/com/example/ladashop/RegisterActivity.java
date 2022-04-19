@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void cancel(View view) {
-
+        finish();
     }
 
     private void startShopping() {

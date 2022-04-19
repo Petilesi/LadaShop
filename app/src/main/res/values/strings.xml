@@ -11,4 +11,7 @@
     <string name="passwordCheck">Kérjük adja meg ismét jelszavát</string>
     <string name="cancel">Mégse</string>
     <string name="product_description">Termék leírás.</string>
+    <string name="toCart">Kosárba</string>
+    <string name="descPlaceholder">Leírás</string>
+    <string name="namePlaceholder">Név</string>
 </resources>

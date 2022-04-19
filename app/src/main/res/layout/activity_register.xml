@@ -32,7 +32,8 @@
         android:layout_marginRight="@dimen/base_margin"
         android:ems="10"
         android:hint="@string/username"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/email_editText"
@@ -46,7 +47,8 @@
         android:layout_marginRight="@dimen/base_margin"
         android:ems="10"
         android:hint="@string/email_address"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -60,7 +62,8 @@
         android:layout_marginRight="@dimen/base_margin"
         android:ems="10"
         android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/passwordCheckEditText"
@@ -74,7 +77,8 @@
         android:layout_marginRight="@dimen/base_margin"
         android:ems="10"
         android:hint="@string/passwordCheck"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/registerButton"
