@@ -7,9 +7,8 @@
     <string name="normalLogin">Bejelentkezés</string>
     <string name="register">Regisztráció</string>
     <string name="registration">Regisztráció</string>
-    <string name="username">Felhasználónév</string>
     <string name="email_address">E-mail cím</string>
-    <string name="password">Jelszó</string>
     <string name="passwordCheck">Kérjük adja meg ismét jelszavát</string>
     <string name="cancel">Mégse</string>
+    <string name="product_description">Termék leírás.</string>
 </resources>
