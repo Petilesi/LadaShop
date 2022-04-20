@@ -14,4 +14,52 @@
     <string name="toCart">Kosárba</string>
     <string name="descPlaceholder">Leírás</string>
     <string name="namePlaceholder">Név</string>
+
+    <string-array name="shopping_item_names">
+        <item>2101 felni</item>
+        <item>2101 hengerfej</item>
+        <item>2101 hűtő</item>
+        <item>2101 hűtőventillátor</item>
+        <item>2101 karburátor</item>
+        <item>2101 kipufogó rendszer</item>
+        <item>2101 váltó</item>
+        <item>2101 vezérműtengely</item>
+        <item>2101 üzemanyagpumpa</item>
+    </string-array>
+
+    <string-array name="shopping_item_desc">
+        <item>Gyári minőségű lemezfelni a 2101-es típusra</item>
+        <item>Új utángyártott komplett hengerfej a 2101-es típusra</item>
+        <item>Új utángyártott hűtő a 2101-es típusra</item>
+        <item>Új utángyártott hűtőventillátor a 2101-es típusra</item>
+        <item>Új utángyártott karburátor a 2101-es típusra</item>
+        <item>Új utángyártott komplett kipufogórendszer a 2101-es típusra</item>
+        <item>Felújított váltó kompletten a 2101-es típushoz</item>
+        <item>Új eredeti vezérműtengely a 2101-es típushoz</item>
+        <item>Új utángyártott üzemanyagpumpa a 2101-es típusra</item>
+    </string-array>
+
+    <array name="shopping_item_images">
+        <item>@drawable/lada_2101_gyari_felni</item>
+        <item>@drawable/lada_2101_hengerfej</item>
+        <item>@drawable/lada_2101_huto</item>
+        <item>@drawable/lada_2101_hutoventillator</item>
+        <item>@drawable/lada_2101_karbi</item>
+        <item>@drawable/lada_2101_kipufogo_rendszer</item>
+        <item>@drawable/lada_2101_valto</item>
+        <item>@drawable/lada_2101_veztengely</item>
+        <item>@drawable/lada_2101_ac_pumpa</item>
+    </array>
+
+    <array name="shopping_item_price">
+        <item>100 Huf</item>
+        <item>150 Huf</item>
+        <item>500 Huf</item>
+        <item>300 Huf</item>
+        <item>180 Huf</item>
+        <item>70 Huf</item>
+        <item>20 Huf</item>
+        <item>30 Huf</item>
+        <item>15 Huf</item>
+    </array>
 </resources>

@@ -4,10 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.fragment.app.FragmentActivity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.Viewholder> implements Filterable {
-    private ArrayList<ListingItem> vListingItemsData;
-    private ArrayList<ListingItem> vListingItemsDataAll;
+    private ArrayList<ListingItem> vListingItemsData = new ArrayList<>();
+    private ArrayList<ListingItem> vListingItemsDataAll = new ArrayList<>();
     private Context vContext;
     private int lastPosition = -1;
 
@@ -33,7 +36,8 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.Viewho
     }
 
     @Override
-    public ListingsAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListingsAdapter.Viewholder onCreateViewHolder(
+            @NonNull ViewGroup parent, int viewType) {
         return new Viewholder(LayoutInflater.from(vContext).inflate(R.layout.list_item, parent, false));
     }
 
@@ -42,6 +46,12 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.Viewho
         ListingItem currentItem = vListingItemsData.get(position);
 
         holder.bindTo(currentItem);
+
+        if(holder.getAdapterPosition() > lastPosition){
+            Animation animation = AnimationUtils.loadAnimation(vContext, R.anim.slide_in);
+            holder.itemView.startAnimation(animation);
+            lastPosition = holder.getAdapterPosition();
+        }
     }
 
     @Override
@@ -90,7 +100,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.Viewho
         private TextView vPrice;
         private ImageView vItemImg;
 
-        public Viewholder(@NonNull View itemView) {
+        public Viewholder(View itemView) {
             super(itemView);
 
             vTitle = itemView.findViewById(R.id.itemTitle);

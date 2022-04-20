@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void normalLogin(View view) {
-        EditText userName = findViewById(R.id.userNameEditText);
-        EditText password = findViewById(R.id.passwordEditText);
+        userName = findViewById(R.id.userNameEditText);
+        password = findViewById(R.id.passwordEditText);
 
         String usernameStr = userName.getText().toString();
         String passwordStr = password.getText().toString();

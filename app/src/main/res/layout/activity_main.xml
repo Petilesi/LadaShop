@@ -65,10 +65,9 @@
         android:layout_below="@id/guestLogin"
         android:layout_marginTop="@dimen/def_margin"
         android:layout_marginBottom="@dimen/def_margin"
-        android:textAlignment="center"
         android:onClick="normalLogin"
         android:text="@string/normalLogin"
-        />
+        android:textAlignment="center" />
 
     <Button
         android:id="@+id/register"
