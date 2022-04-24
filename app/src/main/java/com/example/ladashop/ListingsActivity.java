@@ -5,6 +5,7 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,10 +31,9 @@ public class ListingsActivity extends AppCompatActivity {
     private RecyclerView vRecyclerView;
     private ArrayList<ListingItem> vPartsData;
     private ListingsAdapter vAdapter;
-
     private FirebaseFirestore vFirestore;
     private CollectionReference vParts;
-
+    private SharedPreferences preferences;
     private int gridNumber = 1;
 
     @Override
@@ -50,33 +50,18 @@ public class ListingsActivity extends AppCompatActivity {
         }
 
         vRecyclerView = findViewById(R.id.recyclerView);
+
         vRecyclerView.setLayoutManager(new GridLayoutManager(this, gridNumber));
+
         vPartsData = new ArrayList<>();
+
         vAdapter = new ListingsAdapter(this, vPartsData);
+
         vRecyclerView.setAdapter(vAdapter);
 
         vFirestore = FirebaseFirestore.getInstance();
         vParts = vFirestore.collection("Parts");
-
-
-
-    }
-
-    private void queryData(){
-        vPartsData.clear();
-        vParts.orderBy("nev").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for(QueryDocumentSnapshot document : queryDocumentSnapshots){
-                ListingItem part = document.toObject(ListingItem.class);
-                vPartsData.add(part);
-            }
-
-            if (vPartsData.size() == 0){
-                initializeData();
-                queryData();
-            }
-            vAdapter.notifyDataSetChanged();
-        });
-       // vParts.whereEqualTo()
+        queryData();
     }
 
     private void initializeData(){
@@ -97,6 +82,23 @@ public class ListingsActivity extends AppCompatActivity {
         itemsImageResource.recycle();
        // vAdapter.notifyDataSetChanged();
     }
+
+    private void queryData(){
+        vPartsData.clear();
+        vParts.orderBy("nev").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for(QueryDocumentSnapshot document : queryDocumentSnapshots){
+                ListingItem part = document.toObject(ListingItem.class);
+                vPartsData.add(part);
+            }
+
+            if (vPartsData.size() == 0){
+                initializeData();
+                queryData();
+            }
+            vAdapter.notifyDataSetChanged();
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
