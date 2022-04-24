@@ -14,6 +14,8 @@
     <string name="toCart">Kosárba</string>
     <string name="descPlaceholder">Leírás</string>
     <string name="namePlaceholder">Név</string>
+    <string name="remove_from_cart">Eltávolítás a kosárból</string>
+    <string name="remove">Eltávolítás</string>
 
     <string-array name="shopping_item_names">
         <item>2101 felni</item>

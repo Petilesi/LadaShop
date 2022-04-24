@@ -1,23 +1,37 @@
 package com.example.ladashop;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -35,7 +49,13 @@ public class ListingsActivity extends AppCompatActivity {
     private CollectionReference vParts;
     private SharedPreferences preferences;
     private int gridNumber = 1;
+    private int cartItems = 0;
 
+    private NotificationHandler vNotifHandler;
+    private AlarmManager vAlarmManager;
+    private JobScheduler vScheduler;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +82,12 @@ public class ListingsActivity extends AppCompatActivity {
         vFirestore = FirebaseFirestore.getInstance();
         vParts = vFirestore.collection("Parts");
         queryData();
+
+        vNotifHandler = new NotificationHandler(this);
+        vAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        setAlarmManager();
+        vScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        setJobScheduler();
     }
 
     private void initializeData(){
@@ -77,7 +103,7 @@ public class ListingsActivity extends AppCompatActivity {
                     itemList[i],
                     itemsInfo[i],
                     itemsPrice[i],
-                    itemsImageResource.getResourceId(i,0)));
+                    itemsImageResource.getResourceId(i,0),0));
 
         itemsImageResource.recycle();
        // vAdapter.notifyDataSetChanged();
@@ -85,9 +111,10 @@ public class ListingsActivity extends AppCompatActivity {
 
     private void queryData(){
         vPartsData.clear();
-        vParts.orderBy("nev").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        vParts.orderBy("toCartCount", Query.Direction.DESCENDING).limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for(QueryDocumentSnapshot document : queryDocumentSnapshots){
                 ListingItem part = document.toObject(ListingItem.class);
+                part.setId(document.getId());
                 vPartsData.add(part);
             }
 
@@ -99,6 +126,33 @@ public class ListingsActivity extends AppCompatActivity {
         });
     }
 
+    public void deletePart(ListingItem item){
+        DocumentReference ref = vParts.document(item._getID());
+
+        ref.delete().addOnSuccessListener(success -> {
+            Log.d(LOG_TAG, "Part deleted successfully:" + item._getID());
+        })
+        .addOnFailureListener(failure -> {
+            Toast.makeText(this, "Part" + item._getID() + " cannot be deleted.", Toast.LENGTH_LONG).show();
+        });
+        vNotifHandler.send(item.getNev());
+        queryData();
+    }
+
+    public void updatePart(ListingItem item){
+
+    }
+
+ //  public void updateAlertIcon(ListingItem item) {
+ //      cartItems = (cartItems + 1);
+ //      if (0 < cartItems) {
+ //          countTextView.setText(String.valueOf(cartItems));
+ //      } else {
+ //          countTextView.setText("");
+ //      }
+
+ //      redCircle.setVisibility((cartItems > 0) ? VISIBLE : GONE);
+ //  }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -142,5 +196,33 @@ public class ListingsActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void setAlarmManager(){
+        long repeatTime = AlarmManager.INTERVAL_HALF_HOUR;
+        long triggerTime = SystemClock.elapsedRealtime() + repeatTime;
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE);
+
+        vAlarmManager.setInexactRepeating(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                0,
+                0,
+                pendingIntent
+        );
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setJobScheduler(){
+        int networkType = JobInfo.NETWORK_TYPE_UNMETERED;
+        int hardDeadLine = 5000;
+
+        ComponentName name = new ComponentName(getPackageName(), NotificationJobService.class.getName());
+        JobInfo.Builder builder = new JobInfo.Builder(0, name)
+                .setRequiredNetworkType(networkType)
+                .setRequiresBatteryNotLow(true)
+                .setOverrideDeadline(hardDeadLine);
+
+        vScheduler.schedule(builder.build());
     }
 }

@@ -108,12 +108,6 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.Viewho
             vPrice = itemView.findViewById(R.id.price);
             vItemImg = itemView.findViewById(R.id.itemImage);
 
-            itemView.findViewById(R.id.toCart).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
         }
 
         public void bindTo(ListingItem currentItem) {
@@ -122,7 +116,8 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.Viewho
             vPrice.setText(currentItem.getAr());
 
             Glide.with(vContext).load(currentItem.getImgResource()).into(vItemImg);
+            itemView.findViewById(R.id.remove).setOnClickListener(view -> ((ListingsActivity)vContext).deletePart(currentItem));
+            }
         }
-    };
-};
+    }
 
