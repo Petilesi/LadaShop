@@ -12,8 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -23,8 +28,11 @@ public class ListingsActivity extends AppCompatActivity {
 
 
     private RecyclerView vRecyclerView;
-    private ArrayList<ListingItem> vItems;
+    private ArrayList<ListingItem> vPartsData;
     private ListingsAdapter vAdapter;
+
+    private FirebaseFirestore vFirestore;
+    private CollectionReference vParts;
 
     private int gridNumber = 1;
 
@@ -43,25 +51,51 @@ public class ListingsActivity extends AppCompatActivity {
 
         vRecyclerView = findViewById(R.id.recyclerView);
         vRecyclerView.setLayoutManager(new GridLayoutManager(this, gridNumber));
-        vItems = new ArrayList<>();
-        vAdapter = new ListingsAdapter(this, vItems);
+        vPartsData = new ArrayList<>();
+        vAdapter = new ListingsAdapter(this, vPartsData);
         vRecyclerView.setAdapter(vAdapter);
 
-        initializeData();
+        vFirestore = FirebaseFirestore.getInstance();
+        vParts = vFirestore.collection("Parts");
+
+
+
     }
+
+    private void queryData(){
+        vPartsData.clear();
+        vParts.orderBy("nev").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for(QueryDocumentSnapshot document : queryDocumentSnapshots){
+                ListingItem part = document.toObject(ListingItem.class);
+                vPartsData.add(part);
+            }
+
+            if (vPartsData.size() == 0){
+                initializeData();
+                queryData();
+            }
+            vAdapter.notifyDataSetChanged();
+        });
+       // vParts.whereEqualTo()
+    }
+
     private void initializeData(){
         String[] itemList =  getResources().getStringArray(R.array.shopping_item_names);
         String[] itemsInfo =  getResources().getStringArray(R.array.shopping_item_desc);
         String[] itemsPrice =  getResources().getStringArray(R.array.shopping_item_price);
         TypedArray itemsImageResource =  getResources().obtainTypedArray(R.array.shopping_item_images);
 
-        vItems.clear();
+      //  vPartsData.clear();
 
-        for (int i = 0; i < itemList.length; i++) {
-            vItems.add(new ListingItem(itemList[i], itemsInfo[i], itemsPrice[i], itemsImageResource.getResourceId(i,0)));
-        }
+        for (int i = 0; i < itemList.length; i++)
+            vParts.add(new ListingItem(
+                    itemList[i],
+                    itemsInfo[i],
+                    itemsPrice[i],
+                    itemsImageResource.getResourceId(i,0)));
+
         itemsImageResource.recycle();
-        vAdapter.notifyDataSetChanged();
+       // vAdapter.notifyDataSetChanged();
     }
 
     @Override

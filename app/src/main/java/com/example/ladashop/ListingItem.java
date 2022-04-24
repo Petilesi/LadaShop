@@ -4,7 +4,11 @@ public class ListingItem {
     private String nev;
     private String leiras;
     private String ar;
-    private final int imgResource;
+    private  int imgResource;
+
+    public ListingItem() {
+
+    }
 
     public ListingItem(String nev, String leiras, String ar, int imgResource) {
         this.nev = nev;
