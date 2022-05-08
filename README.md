@@ -16,3 +16,5 @@
 - notification vagy alarm manager ✓
 - crud ✓
 - komplex firestore lekérdezés ✓ (1db)
+
+### Ha valami nagy probléma lenne akkor keress meg coospacen (SLV6ZW)
