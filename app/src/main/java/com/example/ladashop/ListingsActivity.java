@@ -21,7 +21,10 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +37,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 import java.util.ArrayList;
 
@@ -50,6 +55,8 @@ public class ListingsActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private int gridNumber = 1;
     private int cartItems = 0;
+    private TextView countTextView;
+    private FrameLayout redCircle;
 
     private NotificationHandler vNotifHandler;
     private AlarmManager vAlarmManager;
@@ -139,20 +146,31 @@ public class ListingsActivity extends AppCompatActivity {
         queryData();
     }
 
-    public void updatePart(ListingItem item){
+
+    public void updateAlertIcon(ListingItem item) {
+        Log.d(LOG_TAG, "elso");
+        cartItems = (cartItems + 1);
+        if (0 < cartItems) {
+            Log.d(LOG_TAG, "masodik");
+            countTextView.setText(String.valueOf(cartItems));
+            Log.d(LOG_TAG, "harmadik");
+        } else {
+            Log.d(LOG_TAG, "negyedik");
+            countTextView.setText("");
+        }
+
+        redCircle.setVisibility((cartItems > 0) ? VISIBLE : GONE);
+
+        vParts.document(item._getID()).update("cartedCount", item.getCartedCount() + 1)
+                .addOnFailureListener(fail -> {
+                    Toast.makeText(this, "Item " + item._getID() + " cannot be changed.", Toast.LENGTH_LONG).show();
+                });
+
+        vNotifHandler.send(item.getNev());
+        queryData();
+
 
     }
-
- //  public void updateAlertIcon(ListingItem item) {
- //      cartItems = (cartItems + 1);
- //      if (0 < cartItems) {
- //          countTextView.setText(String.valueOf(cartItems));
- //      } else {
- //          countTextView.setText("");
- //      }
-
- //      redCircle.setVisibility((cartItems > 0) ? VISIBLE : GONE);
- //  }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -195,6 +213,18 @@ public class ListingsActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
+        final MenuItem alertMenuItem = menu.findItem(R.id.cart);
+        FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
+
+        redCircle = (FrameLayout) rootView.findViewById(R.id.view_alert_red_circle);
+        countTextView = (TextView) rootView.findViewById(R.id.view_alert_count_textview);
+
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(alertMenuItem);
+            }
+        });
         return super.onPrepareOptionsMenu(menu);
     }
 

@@ -11,10 +11,10 @@
 
     <item
         android:id="@+id/cart"
-        android:title="Kosárba"
-        android:icon="@drawable/shopping_cart"
         app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView"
+        android:title="@string/toCart"
+        android:icon="@drawable/ic_baseline_shopping_cart"
+        app:actionLayout="@layout/shopping_cart_icon"
         />
 
     <item

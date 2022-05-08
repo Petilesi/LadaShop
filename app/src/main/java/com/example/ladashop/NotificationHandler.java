@@ -37,7 +37,7 @@ public class NotificationHandler {
 
     public void send(String message){
         Intent intent = new Intent(vContext, ListingsActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(vContext,0,intent, PendingIntent.FLAG_MUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(vContext, NOTIFICATION_ID, intent, PendingIntent.FLAG_MUTABLE);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(vContext, CHANNEL_ID)

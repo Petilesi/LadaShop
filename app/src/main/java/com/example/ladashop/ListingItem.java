@@ -7,17 +7,19 @@ public class ListingItem {
     private String ar;
     private  int imgResource;
     private int toCartCount;
+    private int cartedCount;
 
     public ListingItem() {
 
     }
 
-    public ListingItem(String nev, String leiras, String ar, int imgResource, int toCartCount) {
+    public ListingItem(String nev, String leiras, String ar, int imgResource, int cartedCount) {
         this.nev = nev;
         this.leiras = leiras;
         this.ar = ar;
         this.imgResource = imgResource;
         this.toCartCount = toCartCount;
+        this.cartedCount = cartedCount;
     }
 
     public String getNev() {
@@ -46,5 +48,9 @@ public class ListingItem {
 
     public void setId(String id){
         this.id = id;
+    }
+
+    public int getCartedCount() {
+        return cartedCount;
     }
 }

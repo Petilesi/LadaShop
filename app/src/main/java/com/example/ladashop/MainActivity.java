@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -104,30 +106,38 @@ public class MainActivity extends AppCompatActivity {
         userName = findViewById(R.id.userNameEditText);
         password = findViewById(R.id.passwordEditText);
 
-        String usernameStr = userName.getText().toString();
-        String passwordStr = password.getText().toString();
+        if(userName.getText().toString().trim().length() == 0 || password.getText().toString().trim().length() == 0){
+            Toast.makeText(this, "Kérlek töltsd ki a mezőket", Toast.LENGTH_SHORT).show();
+        }else{
+            String usernameStr = userName.getText().toString();
+            String passwordStr = password.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(usernameStr, passwordStr).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(LOG_TAG, "Login successful");
-                    startShopping();
-                }else{
-                    Log.d(LOG_TAG, "Login unsuccessful");
+
+            mAuth.signInWithEmailAndPassword(usernameStr, passwordStr).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if(task.isSuccessful()){
+                        Log.d(LOG_TAG, "Login successful");
+                        startShopping();
+                    }else{
+                        Log.d(LOG_TAG, "Login unsuccessful");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_to_top, R.anim.slide_to_top);
     }
 
     private void startShopping() {
         Intent intent = new Intent(this,ListingsActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_to_top, R.anim.slide_to_top);
     }
 
     @Override

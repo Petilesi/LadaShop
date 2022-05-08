@@ -116,6 +116,7 @@ public class ListingsAdapter extends RecyclerView.Adapter<ListingsAdapter.Viewho
             vPrice.setText(currentItem.getAr());
 
             Glide.with(vContext).load(currentItem.getImgResource()).into(vItemImg);
+            itemView.findViewById(R.id.toCart).setOnClickListener(view -> ((ListingsActivity)vContext).updateAlertIcon(currentItem));
             itemView.findViewById(R.id.remove).setOnClickListener(view -> ((ListingsActivity)vContext).deletePart(currentItem));
             }
         }
